@@ -21,6 +21,12 @@ namespace AspNetCoreIdentity.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Admin, Gestor")]
+        public IActionResult Secret()
+        {
+            return View();
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
