@@ -27,6 +27,20 @@ namespace AspNetCoreIdentity.Controllers
             return View();
         }
 
+        //claim
+        [Authorize(Policy = "PodeExcluir2")]
+        public IActionResult SecretClaim()
+        {
+            return View("Secret");
+        }
+
+        //claim "economica"
+        [Authorize(Policy = "PodeEscrever")]
+        public IActionResult SecretClaimGravar()
+        {
+            return View("Secret");
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
