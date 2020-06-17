@@ -20,6 +20,9 @@ namespace AspNetCoreIdentity
             .AddEnvironmentVariables();
 
             Configuration = builder.Build();
+
+            if (hostEnvironment.IsProduction())
+                builder.AddUserSecrets<Startup>();
         }
 
 
