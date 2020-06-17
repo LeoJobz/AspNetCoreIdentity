@@ -12,6 +12,8 @@ namespace AspNetCoreIdentity.Config
         {
             services.AddSingleton<IAuthorizationHandler, PermissaoNecessariaHandler>();
 
+            services.AddScoped<AuditoriaFilter>();
+
             return services;
         }
 

@@ -1,4 +1,5 @@
 ﻿using AspNetCoreIdentity.Config;
+using AspNetCoreIdentity.Extensions;
 using KissLog;
 using KissLog.Apis.v1.Listeners;
 using KissLog.AspNetCore;
@@ -44,7 +45,11 @@ namespace AspNetCoreIdentity
 
             services.ResolveDependencies();
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc(options =>
+            {
+                options.Filters.Add(typeof(AuditoriaFilter));
+
+            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
