@@ -1,5 +1,6 @@
 ﻿using AspNetCoreIdentity.Extensions;
 using AspNetCoreIdentity.Models;
+using KissLog;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -10,10 +11,21 @@ namespace AspNetCoreIdentity.Controllers
     [Authorize]
     public class HomeController : Controller
     {
+
+        private readonly ILogger _logger;
+
+        public HomeController(ILogger logger)
+        {
+            _logger = logger;
+        }
+
+
         //permitir acesso
         [AllowAnonymous]
         public IActionResult Index()
         {
+            _logger.Debug("Hello world from AspNetCore!");
+
             return View();
         }
 

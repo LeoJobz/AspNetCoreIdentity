@@ -1,6 +1,10 @@
 ﻿using AspNetCoreIdentity.Config;
+using KissLog;
+using KissLog.Apis.v1.Listeners;
+using KissLog.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -28,6 +32,12 @@ namespace AspNetCoreIdentity
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddScoped<ILogger>((context) =>
+            {
+                return Logger.Factory.Get();
+            });
+
             services.AddIdentityConfig(Configuration);
 
             services.AddAuthorizationConfig();
@@ -55,6 +65,14 @@ namespace AspNetCoreIdentity
             app.UseCookiePolicy();
 
             app.UseAuthentication();
+
+            app.UseKissLogMiddleware(options =>
+            {
+                options.Listeners.Add(new KissLogApiListener(new KissLog.Apis.v1.Auth.Application(
+                    Configuration["KissLog.OrganizationId"],
+                    Configuration["KissLog.ApplicationId"])
+                ));
+            });
 
             app.UseMvc(routes =>
             {
